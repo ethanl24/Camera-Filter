@@ -66,6 +66,49 @@ struct ContentView: View {
                             }
                         }
                     }
+                    
+                    Button("Blur"){
+                        if let inputImage = selectedImage{
+                            let beginImage = CIImage(image: inputImage)
+                            let currentFilter = CIFilter.boxBlur()
+                            currentFilter.inputImage = beginImage
+                            currentFilter.radius = 40
+                            
+                            guard let outputImage = currentFilter.outputImage else { return }
+                            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent){
+                                let uiImage = UIImage(cgImage: cgImage)
+                                self.selectedImage = uiImage
+                            }
+                        }
+                    }
+                    Button("Invert"){
+                        if let inputImage = selectedImage{
+                            let beginImage = CIImage(image: inputImage)
+                            let currentFilter = CIFilter.colorInvert()
+                            currentFilter.inputImage = beginImage
+
+                            guard let outputImage = currentFilter.outputImage else { return }
+                            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent){
+                                let uiImage = UIImage(cgImage: cgImage)
+                                self.selectedImage = uiImage
+                            }
+                        }
+                    }
+                    Button("Monochrome"){
+                        if let inputImage = selectedImage{
+                            let beginImage = CIImage(image: inputImage)
+                            let currentFilter = CIFilter.colorMonochrome()
+                            currentFilter.inputImage = beginImage
+
+                            guard let outputImage = currentFilter.outputImage else { return }
+                            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent){
+                                let uiImage = UIImage(cgImage: cgImage)
+                                self.selectedImage = uiImage
+                            }
+                        }
+                    }
+
+
                 }.sheet(isPresented: self.$displayPickerView) {
                     ImagePickerView(selectedImage: self.$selectedImage, sourceType: self.sourceType)
                 }
